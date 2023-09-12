@@ -16,13 +16,31 @@ public class SoundRecorder {
             button.addActionListener(e -> {
                 if(button.getText().equals(RECORD)) {
                     button.setText(STOP);
-                    new Thread(() -> {
+                    int i = 0 ; 
+                    while (true){
+                        
+                        final String filename = "/Downloads/SoundRecorder/Sounds/test" + i + ".wav"; 
+                    Thread thread = new Thread(() -> {
                         try {
-                            record(wavFile);
+                            File wf = new File(System.getProperty("user.home") + filename );
+                            record(wf);
                         } catch (Throwable t) {
                             t.printStackTrace();
                         }
-                    }).start();
+                    });
+                    thread.start();
+                    try{
+                    Thread.sleep(5000);
+                    }catch(Exception er)
+                    {
+                        System.out.println("Catching sound error"+er);
+                    }
+                    line.stop();
+                    line.close();
+                    line.start();
+                    i++;
+                }
+                    
                 } else {
                     button.setText(RECORD);
                     line.stop();
